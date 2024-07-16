@@ -1,0 +1,6 @@
+@FuckMe_HostAddress = http://localhost:5141
+
+GET {{FuckMe_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
