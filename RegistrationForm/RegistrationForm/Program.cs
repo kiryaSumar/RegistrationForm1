@@ -1,6 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using RegistrationForm.BLL.Services;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,9 +6,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-string connection = builder.Configuration.GetConnectionString("DefaultConnection");
-//builder.Services.AddDbContext<IUserService>(options =>
-    //options.UseSqlite(connection));
 
 var app = builder.Build();
 
