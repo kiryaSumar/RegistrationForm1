@@ -1,17 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using RegistrationForm.BLL;
 using RegistrationForm.BLL.Services;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace RegistrationForm.PL.Controllers
 {
-    [ApiController]//помечаем что это контроллер
+    [ApiController]//note that it is a controller
     [Route("api/v1/[controller]")]//
     public class UserController : Controller
     {
         private readonly IUserService _userService;//dependency injection takes place, singletone scope and smth else(уровни изолированности, но не совсем)
-        public UserController(IUserService userService)
+        private readonly IValidator<User> _validator;// = new UserValidator();/////////////
+
+        public UserController( IUserService userService, IValidator<User> validator)
         {
+            
             _userService = userService;
+            _validator = validator;
+
         }
 
         [HttpGet("{id}")]
@@ -22,11 +32,19 @@ namespace RegistrationForm.PL.Controllers
         }
 
         [HttpPost]//ActionResult - read about
-        public ActionResult<User> CreateUser([FromBody] User user)
+        public async Task<ActionResult<User>> CreateUser([FromBody] User user)
         {
 
             var saveUser = _userService.CreateUser(user);
+            var result = _validator.Validate(user);//changed type from ValidationResult to var
+
+            if (!result.IsValid)
+            {
+                return BadRequest(result.ToString("\n"));
+            }
+
             return Ok(saveUser);
+            
         }
 
     }
