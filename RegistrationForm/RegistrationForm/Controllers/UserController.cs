@@ -16,7 +16,7 @@ namespace RegistrationForm.PL.Controllers
             new User() { Id = Guid.NewGuid(),Name = "Jane",Email = "Jane@mail.ru", Password = "J2"},
             new User() { Id = Guid.NewGuid(),Name = "Andy",Email = "Andy@mail.ru", Password = "A1"},
         });
-        //private readonly ApplicationContext _context;
+        private readonly ApplicationContext _context;
         private readonly IUserService _userService;//dependency injection takes place, singletone scope and smth else(уровни изолированности, но не совсем)
         public UserController(IUserService userService)
         {
@@ -24,19 +24,17 @@ namespace RegistrationForm.PL.Controllers
         }
 
         [HttpGet("{id}")]
-         public ActionResult<User> GetUser([FromRoute(Name = "id")] Guid Id)//Полинин Вариант
-        //public IActionResult GetUser(Guid Id)//скорее всего, нужно сделать метод асинхронным
+        // public ActionResult<User> GetUser([FromRoute(Name = "id")] Guid Id)//Полинин Вариант
+        public IActionResult GetUser(Guid Id)//скорее всего, нужно сделать метод асинхронным
         {
             // var user = /*await*/ _context.Users.FindAsync();
-
-            //var user = users.SingleOrDefault(u => u.Id == Id);
-            //if (user == null)
-            //{
-            //     return  NotFound();
-            //}
-            //return  Ok(user);
-            return Ok(new User());
-           
+            var user = users.SingleOrDefault(u => u.Id == Id);
+            if (user == null)
+            {
+                 return  NotFound();
+            }
+            //return Ok(new User());
+            return  Ok(user);
         }
 
         [HttpPost]//ActionResult - read about
