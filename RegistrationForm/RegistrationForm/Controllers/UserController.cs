@@ -9,11 +9,11 @@ using System.Text.RegularExpressions;
 
 namespace RegistrationForm.PL.Controllers
 {
-    [ApiController]//помечаем что это контроллер
+    [ApiController]//note that it is a controller
     [Route("api/v1/[controller]")]//
     public class UserController : Controller
     {
-        private UserValidator _validator = new UserValidator;/////////////
+        private IValidator<User> _validator;// = new UserValidator();/////////////
         private readonly IUserService _userService;//dependency injection takes place, singletone scope and smth else(уровни изолированности, но не совсем)
         public UserController(IValidator<User> validator, IUserService userService)
         {
