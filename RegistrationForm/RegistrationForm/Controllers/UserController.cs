@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RegistrationForm.BLL;
 using RegistrationForm.BLL.Services;
+using System.Text.RegularExpressions;
 
 namespace RegistrationForm.PL.Controllers
 {
@@ -24,9 +25,50 @@ namespace RegistrationForm.PL.Controllers
         [HttpPost]//ActionResult - read about
         public ActionResult<User> CreateUser([FromBody] User user)
         {
-
+            string numbers = "0123456789";
+            bool containsNumber = false;
             var saveUser = _userService.CreateUser(user);
+            if (user.Name == "")
+            {
+                return BadRequest();
+            }
+            if (user.Email == "")
+            {
+                return BadRequest();
+            }
+            string pattern = "[.\\-_a-z0-9]+@([a-z0-9][\\-a-z0-9]+\\.)+[a-z]{2,6}";
+            Match isMatch = Regex.Match(user.Email, pattern, RegexOptions.IgnoreCase);
+            if (!isMatch.Success)
+            {
+                return BadRequest();
+            }
+            if (user.Password == "")
+            {
+                return BadRequest();
+            }
+            if (user.Password.Length < 8)
+            {
+                return BadRequest();
+            }
+            if (user.Password.ToLower() == user.Password)
+            {
+                return BadRequest();
+            }
+            foreach (var n in numbers)
+            {
+                if (user.Password.Contains(n))
+                { 
+                    containsNumber = true;
+                    break;
+                }
+            }
+            if (!containsNumber)
+            {
+                return BadRequest();
+            }
+
             return Ok(saveUser);
+            
         }
 
     }
