@@ -13,12 +13,14 @@ namespace RegistrationForm.PL.Controllers
     [Route("api/v1/[controller]")]//
     public class UserController : Controller
     {
-        private IValidator<User> _validator;// = new UserValidator();/////////////
         private readonly IUserService _userService;//dependency injection takes place, singletone scope and smth else(уровни изолированности, но не совсем)
-        public UserController(IValidator<User> validator, IUserService userService)
+        private readonly IValidator<User> _validator;// = new UserValidator();/////////////
+
+        public UserController( IUserService userService, IValidator<User> validator)
         {
-            _validator = validator;
+            
             _userService = userService;
+            _validator = validator;
 
         }
 
@@ -30,54 +32,16 @@ namespace RegistrationForm.PL.Controllers
         }
 
         [HttpPost]//ActionResult - read about
-        public  ActionResult<User> CreateUser([FromBody] User user)
+        public async Task<ActionResult<User>> CreateUser([FromBody] User user)
         {
 
             var saveUser = _userService.CreateUser(user);
-            ValidationResult result = _validator.Validate(user);
-            //string numbers = "0123456789";
-            //bool containsNumber = false;
+            var result = _validator.Validate(user);//changed type from ValidationResult to var
 
-            //if (string.IsNullOrEmpty(user.Name))
-            //{
-            //    return BadRequest();
-            //}
-            //if (string.IsNullOrEmpty(user.Email))
-            //{
-            //    return BadRequest();
-            //}
-
-            //string pattern = "[.\\-_a-z0-9]+@([a-z0-9][\\-a-z0-9]+\\.)+[a-z]{2,6}";
-            //Match isMatch = Regex.Match(user.Email, pattern, RegexOptions.IgnoreCase);
-
-            //if (!isMatch.Success)//email check
-            //{
-            //    return BadRequest();
-            //}
-            //if (string.IsNullOrEmpty(user.Password))
-            //{
-            //    return BadRequest();
-            //}
-            //if (user.Password.Length < 8)
-            //{
-            //    return BadRequest();
-            //}
-            //if (user.Password.ToLower() == user.Password)
-            //{
-            //    return BadRequest();
-            //}
-            //foreach (var n in numbers)
-            //{
-            //    if (user.Password.Contains(n))
-            //    { 
-            //        containsNumber = true;
-            //        break;
-            //    }
-            //}
-            //if (!containsNumber)
-            //{
-            //    return BadRequest();
-            //}
+            if (!result.IsValid)
+            {
+                return BadRequest(result.ToString("\n"));
+            }
 
             return Ok(saveUser);
             

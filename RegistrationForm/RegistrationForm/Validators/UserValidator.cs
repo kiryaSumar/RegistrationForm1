@@ -25,8 +25,8 @@ namespace RegistrationForm.PL.Validators
             RuleFor(x => x.Password)
             .Length(8, 25).WithMessage("Password Length must be between 1 and 20 symbols");
             RuleFor(x=>x.Password).NotEqual(x=>x.Password.ToLower())
-                .WithMessage("Password must consider at least 1 upper case symbol")
-                .Matches(@"(\d)(*)").WithMessage("Password must consider at least 1 digit");
+                .WithMessage("Password must contain at least 1 upper case symbol")
+                .Matches(@"(\d)").WithMessage("Password must contain at least 1 digit");
 
              }
         }
