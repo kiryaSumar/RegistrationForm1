@@ -28,21 +28,23 @@ namespace RegistrationForm.PL.Controllers
             string numbers = "0123456789";
             bool containsNumber = false;
             var saveUser = _userService.CreateUser(user);
-            if (user.Name == "")
+            if (string.IsNullOrEmpty(user.Name))
             {
                 return BadRequest();
             }
-            if (user.Email == "")
+            if (string.IsNullOrEmpty(user.Email))
             {
                 return BadRequest();
             }
+
             string pattern = "[.\\-_a-z0-9]+@([a-z0-9][\\-a-z0-9]+\\.)+[a-z]{2,6}";
             Match isMatch = Regex.Match(user.Email, pattern, RegexOptions.IgnoreCase);
-            if (!isMatch.Success)
+
+            if (!isMatch.Success)//email check
             {
                 return BadRequest();
             }
-            if (user.Password == "")
+            if (string.IsNullOrEmpty(user.Password))
             {
                 return BadRequest();
             }
