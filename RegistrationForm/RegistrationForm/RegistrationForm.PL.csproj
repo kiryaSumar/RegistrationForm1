@@ -7,11 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0-preview.6.24327.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\RegistrationForm.BLL\RegistrationForm.BLL.csproj" />
+    <ProjectReference Include="..\..\RegistrationForm.DAL\RegistrationForm.DAL.csproj" />
   </ItemGroup>
 
 </Project>

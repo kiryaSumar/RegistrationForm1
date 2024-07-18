@@ -35,7 +35,7 @@ namespace RegistrationForm.PL.Controllers
         public async Task<ActionResult<User>> CreateUser([FromBody] User user)
         {
 
-            var saveUser = _userService.CreateUser(user);
+            var saveUser = _userService.CreateUser(user);//почуму кидает ошибку и код 500 без Dependency injection
             var result = _validator.Validate(user);//changed type from ValidationResult to var
 
             if (!result.IsValid)
