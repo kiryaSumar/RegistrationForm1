@@ -1,11 +1,19 @@
 using Microsoft.EntityFrameworkCore;
 using RegistrationForm.BLL.Services;
+using RegistrationForm.PL.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+//var services = builder.Services;//Nope
+
+
 
 builder.Services.AddControllers();
+
+builder.Services.AddDbContext<UserContext>(opt =>////////// Не сработало
+    opt.UseInMemoryDatabase("UserList"));/////////////////
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
