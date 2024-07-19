@@ -1,4 +1,9 @@
+using FluentValidation;
+using RegistrationForm.BLL;
 using RegistrationForm.BLL.Services;
+using RegistrationForm.PL.Validators;
+using Microsoft.EntityFrameworkCore;
+using RegistrationForm.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,12 +14,26 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserService, UserService>();///////////глянуть
+//builder.Services.AddTransient<AbstractValidator<User>, UserValidator>();
+builder.Services.AddScoped<IValidator<User>, UserValidator>();
+//спросить почему не работало:
+//builder.Services.AddScoped<AbstractValidator<User>, UserValidator>();
+
+//Getting connection string from Configuration file
+string connection = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// добавляем контекст ApplicationContext в качестве сервиса в приложение
+builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
+
 
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
+
+
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
