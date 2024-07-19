@@ -19,7 +19,7 @@ namespace RegistrationForm.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)//пробовать без
         {
             modelBuilder.Entity<User>().HasData(
-                    new User { Id = Guid.NewGuid(), Name = "Tom", Email = "Tom@mail.ru", Password ="Password1" },
+                    new User { Id =new Guid("65a6e05f-9777-4145-956e-cc25698d4c4d"), Name = "Tom", Email = "Tom@mail.ru", Password ="Password1" },
                     new User { Id = Guid.NewGuid(), Name = "Alice", Email = "Alice@mail.ru", Password = "Password2" },
                     new User { Id = Guid.NewGuid(), Name = "Bob", Email = "Bob@mail.ru", Password = "Password1" }
             );

@@ -23,7 +23,7 @@ namespace RegistrationForm.PL.Validators
             RuleFor(x => x.Email)
             .EmailAddress().WithMessage("Invalid Email adress");
             RuleFor(x => x.Password)
-            .Length(8, 25).WithMessage("Password Length must be between 1 and 20 symbols");
+            .Length(8, 25).WithMessage("Password Length must be between 8 and 20 symbols");
             RuleFor(x=>x.Password).NotEqual(x=>x.Password.ToLower())
                 .WithMessage("Password must contain at least 1 upper case symbol")
                 .Matches(@"(\d)").WithMessage("Password must contain at least 1 digit");
